@@ -70,6 +70,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
           <Form.Item layout="horizontal" label="Duration">
             <Input
               className="text-center text-base capitalize"
+              name="duration"
               value={
                 pickupDate
                   ? returnDate
