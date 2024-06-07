@@ -45,6 +45,6 @@ npm run dev
 
 ### NB: To run locally make sure to download the Backend Repo and Follow the instruction. [Backend Repo](https://github.com/434huzaifa/Reservation-server)
 
-backend live: [https://reservation-server-tvfn.onrender.com](https://reservation-server-tvfn.onrender.com)
+backend live: [https://reservation-server-gzs9.onrender.com](https://reservation-server-gzs9.onrender.com)
 
-REST API Swagger Doc:  [https://reservation-server-tvfn.onrender.com/docs](https://reservation-server-tvfn.onrender.com/docs)
+REST API Swagger Doc:  [https://reservation-server-gzs9.onrender.com/docs](https://reservation-server-gzs9.onrender.com/docs)
