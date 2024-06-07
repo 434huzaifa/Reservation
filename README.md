@@ -1,30 +1,50 @@
-# React + TypeScript + Vite
+# Reservation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+simple reservation invoice maker
 
-Currently, two official plugins are available:
+## To Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+git pull https://github.com/434huzaifa/Reservation
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+```
+cd Reservation
+```
+
+>If You have docker
+
+```
+docker build -t reservation
+```
+
+```
+docker run -d -p 5000:5000 reservation
+```
+
+NB: If you use the live link of the backend then change that from Dockerfile `VITE_BACKEND` variable.
+
+> No docker I got you convert
+
+```
+npm i
+```
+
+create a `.env.local` file. then add
+
+```
+VITE_BACKEND=http://localhost:3030
+```
+
+NB: If you use the live link of the backend then change live to live link.
+
+
+```
+npm run dev
+```
+
+### NB: To run locally make sure to download the Backend Repo and Follow the instruction. [Backend Repo](https://github.com/434huzaifa/Reservation-server)
+
+backend live: [https://reservation-server-tvfn.onrender.com](https://reservation-server-tvfn.onrender.com)
+
+REST API Swagger Doc:  [https://reservation-server-tvfn.onrender.com/docs](https://reservation-server-tvfn.onrender.com/docs)
