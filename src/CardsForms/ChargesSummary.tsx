@@ -7,7 +7,6 @@ const ChargesSummary = ({
 }: {
   dataSource: Summary[] | undefined;
 }) => {
-  console.log(dataSource);
   const columns: ColumnsType = [
     {
       title: "Charge",

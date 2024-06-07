@@ -125,7 +125,6 @@ function App({ form }: { form: FormInstance }) {
   }
   const invoiceMutation = useMutation({
     mutationFn: async (data:DataObjectType) => {
-      console.log(import.meta.env.VITE_BACKEND);
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND}/pdfgen`,
         data
@@ -133,11 +132,13 @@ function App({ form }: { form: FormInstance }) {
       return res.data;
     },
     onSuccess: () => {
-      setDataSource([])
-      form.resetFields()
+       setDataSource(undefined)
+       form.resetFields()
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
+      // console.log(error);
+      setDataSource(undefined)
+      form.resetFields()
     },
   });
   async function onFinish(value: FormData) {
