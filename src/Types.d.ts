@@ -53,6 +53,11 @@ export type DynamicStateType = {
 export type Summary={
   Charge:string
   Unit?:number
-  Rate:number
+  Rate?:number
   Total?:number
+}
+
+export type Percentage={
+  type:'+'|'-'
+  value:number
 }

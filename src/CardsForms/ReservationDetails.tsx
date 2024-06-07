@@ -14,7 +14,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
     "error" | "warning" | undefined
   >(undefined);
   function pickupOnChange(values: Dayjs) {
-    form.resetFields(["Vehicle"]);
+    form.resetFields(["ReturnDate"]);
     setPickupDate(values);
     if (values && returnDate && values.isAfter(returnDate)) {
       setReturnDateStatus("error");
@@ -53,7 +53,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
             rules={[{ required: true, message: "Please pick a date!" }]}
           >
             <DatePicker
-              minDate={pickupDate?.add(1, "day")}
+              minDate={pickupDate}
               value={returnDate}
               size="large"
               status={returnDateStatus}
@@ -84,7 +84,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
             ></Input>
           </Form.Item>
           <Form.Item label="Discount" name="Discount">
-            <InputNumber className="w-full"></InputNumber>
+            <InputNumber suffix="%" className="w-full"></InputNumber>
           </Form.Item>
         </Card>
 

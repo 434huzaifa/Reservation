@@ -49,6 +49,7 @@ function App() {
       )
     ) {
       const t_dataSource: Summary[] = [];
+      const t_percentage: Summary[] = [];
       if (values.PickupDate && values.ReturnDate && values.Vehicle) {
         let rate: Rates | undefined;
         carListQuery?.data?.data.forEach((x) => {
@@ -56,8 +57,10 @@ function App() {
             rate = x.rates;
           }
         });
-        const days = values.ReturnDate.diff(values.PickupDate, "d");
         const weeks = values.ReturnDate.diff(values.PickupDate, "w");
+        values.ReturnDate = values.ReturnDate.subtract(7 * weeks, "d");
+        const days = values.ReturnDate.diff(values.PickupDate, "d");
+        values.ReturnDate = values.ReturnDate.subtract(24 * days, "h");
         const hours = values.ReturnDate.diff(values.PickupDate, "h");
         if (days && rate) {
           t_dataSource.push({
@@ -85,24 +88,39 @@ function App() {
         }
       }
       if (values.Discount) {
-        t_dataSource.push({ Charge: "Discount", Rate: values.Discount });
+        t_percentage.push({ Charge: "Discount", Rate: values.Discount });
       }
       if (values.AdditionalCharges && values.AdditionalCharges.length != 0) {
         if (values.AdditionalCharges.includes(1)) {
-          t_dataSource.push({ Charge: "Collision Damage Waiver", Rate: 9 });
+          t_dataSource.push({ Charge: "Collision Damage Waiver", Total: 9 });
         }
         if (values.AdditionalCharges.includes(2)) {
-          t_dataSource.push({ Charge: "Liability Insurance", Rate: 15 });
+          t_dataSource.push({ Charge: "Liability Insurance", Total: 15 });
         }
         if (values.AdditionalCharges.includes(3)) {
-          t_dataSource.push({ Charge: "Rental Tax", Rate: 11.5 });
+          t_percentage.push({ Charge: "Rental Tax", Rate: 11.5 });
         }
       }
-      if (dataSource) {
-        setDataSource([...dataSource, ...t_dataSource]);
-      } else {
-        setDataSource(t_dataSource);
-      }
+      
+      let total = 0;
+      let Tax = 0;
+      let Discount = 0;
+      t_dataSource?.forEach((x) => {
+        if (x.Total) {
+          total = total + x.Total;
+        }
+      });
+      t_percentage?.forEach((x) => {
+        if (x.Charge == "Discount" && x.Rate) {
+          Discount = (total * x.Rate) / 100;
+          t_dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Discount });
+        } else if (x.Charge == "Rental Tax" && x.Rate) {
+          Tax = (total * x.Rate) / 100;
+          t_dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Tax });
+        }
+      });
+      t_dataSource.push({ Charge: "Total", Total: total+Tax-Discount });
+      setDataSource(t_dataSource);
     }
   }
   return (
@@ -130,7 +148,9 @@ function App() {
         </div>
         <div>
           <CateTitle title="Charges Summary"></CateTitle>
-          <ChargesSummary dataSource={dataSource}></ChargesSummary>
+          <ChargesSummary
+            dataSource={dataSource}
+          ></ChargesSummary>
         </div>
       </div>
     </Form>
