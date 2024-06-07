@@ -5,3 +5,7 @@
 *{
     font-family: "Poppins", sans-serif;
 }
+
+:where(.css-dev-only-do-not-override-3rel02).ant-card .ant-card-body {
+    padding: 8px 12px;
+}
