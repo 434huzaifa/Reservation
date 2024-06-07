@@ -59,11 +59,12 @@ function App({ form }: { form: FormInstance }) {
         values.ReturnDate = values.ReturnDate.subtract(24 * days, "h");
         const hours = values.ReturnDate.diff(values.PickupDate, "h");
         if (days && rate) {
+          
           t_dataSource.push({
             Charge: "Daily",
             Rate: rate.daily,
             Unit: days,
-            Total: days * rate.daily,
+            Total: days * rate.daily >rate.weekly?rate.weekly:days * rate.daily,
           });
         }
         if (weeks && rate) {
@@ -79,7 +80,7 @@ function App({ form }: { form: FormInstance }) {
             Charge: "Hourly",
             Rate: rate.hourly,
             Unit: hours,
-            Total: hours * rate.hourly,
+            Total: hours * rate.hourly>rate.daily?rate.daily:hours * rate.hourly,
           });
         }
       }
