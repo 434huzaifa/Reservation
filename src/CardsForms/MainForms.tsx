@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CateTitle from "../CateTitle";
-import { Form } from "antd";
+import { Form, FormInstance } from "antd";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ReservationDetails from "./ReservationDetails";
 import VehicleInformation from "./VehicleInformation";
 import CustomerInformation from "./CustomerInformation";
 import AdditionalCharges from "./AdditionalCharges";
 import ChargesSummary from "./ChargesSummary";
-import { Summary, ResponseData, FormData, Rates } from "../Types";
+import { Summary, ResponseData, FormData, Rates, Car, DataObjectType } from "../Types";
 import { useState } from "react";
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
-function App() {
+function App({ form }: { form: FormInstance }) {
   const [dataSource, setDataSource] = useState<Summary[]>();
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
   const carListQuery = useQuery({
     queryKey: ["carlist"],
     queryFn: async () => {
@@ -29,10 +29,6 @@ function App() {
     },
     staleTime: Infinity,
   });
-
-  function onFinish(values: any) {
-    console.log(values);
-  }
   function onValuesChange(
     changedValues: Partial<Record<string, any>>,
     values: FormData
@@ -101,7 +97,7 @@ function App() {
           t_percentage.push({ Charge: "Rental Tax", Rate: 11.5 });
         }
       }
-      
+
       let total = 0;
       let Tax = 0;
       let Discount = 0;
@@ -113,24 +109,79 @@ function App() {
       t_percentage?.forEach((x) => {
         if (x.Charge == "Discount" && x.Rate) {
           Discount = (total * x.Rate) / 100;
-          t_dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Discount });
+          t_dataSource?.push({
+            Charge: x.Charge,
+            Rate: x.Rate,
+            Total: Discount,
+          });
         } else if (x.Charge == "Rental Tax" && x.Rate) {
           Tax = (total * x.Rate) / 100;
           t_dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Tax });
         }
       });
-      t_dataSource.push({ Charge: "Total", Total: total+Tax-Discount });
+      t_dataSource.push({ Charge: "Total", Total: total + Tax - Discount });
       setDataSource(t_dataSource);
     }
+  }
+  const invoiceMutation = useMutation({
+    mutationFn: async (data:DataObjectType) => {
+      console.log(import.meta.env.VITE_BACKEND);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND}/pdfgen`,
+        data
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      setDataSource([])
+      form.resetFields()
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  async function onFinish(value: FormData) {
+    let selectedCar:Car|null=null
+    for (const x of carListQuery.data?.data || []) {
+      if (x.id === value.Vehicle) {
+        selectedCar = x;
+        break; 
+      }
+    }
+    if (dataSource && dataSource.length!=0 && selectedCar) {
+      const data:DataObjectType={
+        personalInfo:{
+          FirstName:value.FirstName,
+          LastName:value.LastName,
+          email:value.Email,
+          phoneNumber:value.Phone
+        },
+        carInfo:{
+          id:value.Vehicle,
+          type:value.VehicleType,
+          make:selectedCar.make,
+          model:selectedCar.model,
+          year:selectedCar.year,
+        },
+        reservationId:value.ReservationID,
+        pickupdate:value.PickupDate.format("MM/DD/YYYY hh:mm A"),
+        returndate:value.ReturnDate.format("MM/DD/YYYY hh:mm A"),
+        summary:dataSource
+      }
+      await invoiceMutation.mutateAsync(data);
+    }
+    
+
+ 
   }
   return (
     <Form
       layout="vertical"
       form={form}
-      onFinish={onFinish}
       onValuesChange={onValuesChange}
+      onFinish={onFinish}
     >
-      <div className="grid grid-cols-3 mt-10 gap-8">
+      <div className="grid grid-cols-3 mt-5 gap-8">
         <div className="flex flex-col">
           <CateTitle title="Reservation Details"></CateTitle>
           <ReservationDetails form={form}></ReservationDetails>
@@ -148,9 +199,7 @@ function App() {
         </div>
         <div>
           <CateTitle title="Charges Summary"></CateTitle>
-          <ChargesSummary
-            dataSource={dataSource}
-          ></ChargesSummary>
+          <ChargesSummary dataSource={dataSource}></ChargesSummary>
         </div>
       </div>
     </Form>

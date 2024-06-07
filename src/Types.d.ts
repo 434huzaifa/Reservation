@@ -54,7 +54,23 @@ export type Summary={
   Total?:number
 }
 
-export type Percentage={
-  type:'+'|'-'
-  value:number
-}
+
+export type DataObjectType = {
+  personalInfo: {
+    FirstName: string;
+    LastName: string;
+    email: string;
+    phoneNumber: number;
+  };
+  carInfo: {
+    id: string;
+    type: string;
+    make: string;
+    model: string;
+    year: number;
+  };
+  reservationId: string;
+  pickupdate: string; // Assuming the format "MM/DD/YYYY hh:mm A" is consistent
+  returndate: string; // Assuming the format "MM/DD/YYYY hh:mm A" is consistent
+  summary: Summary[]; // Assuming summary is an array of Summary objects
+};

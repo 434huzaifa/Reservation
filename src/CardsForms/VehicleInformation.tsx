@@ -29,6 +29,7 @@ const VehicleInformation = ({
   }
   function vehicleTypeChange(v: string) {
     form.resetFields(["Vehicle"]);
+    setVehicle(null)
     setVehicleType(v);
     const t_options: DefaultOptionType[] = [];
     carListQuery?.data?.data.forEach((x) => {
