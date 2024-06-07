@@ -7,7 +7,7 @@ function App() {
 
 
   return (
-    <div className="py-10 px-20">
+    <div className="py-10 px-14">
       <div className="flex justify-between">
         <p className="font-bold text-2xl">Reservation</p>
         <Button type="primary" size="large">

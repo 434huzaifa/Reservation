@@ -4,16 +4,16 @@ const AdditionalCharges = () => {
   return (
     <Card>
       <Form.Item name="AdditionalCharges">
-        <Checkbox.Group>
-          <div className="grid  grid-cols-5 gap-y-4">
-            <div className="col-span-4">
-              <Checkbox value={1}>Collision Damage Waiver</Checkbox>
-              <Checkbox value={2}>Liability Insurance</Checkbox>
+        <Checkbox.Group className="w-full">
+          <div className="flex justify-between w-full">
+            <div className="flex flex-col">
+              <Checkbox className="mb-3" value={1}>Collision Damage Waiver</Checkbox>
+              <Checkbox className="mb-3" value={2}>Liability Insurance</Checkbox>
               <Checkbox value={3}>Rental Tax</Checkbox>
             </div>
-            <div>
-              <p>$9.00</p>
-              <p>$15.00</p>
+            <div className="flex flex-col">
+              <p className="mb-3">$9.00</p>
+              <p className="mb-3">$15.00</p>
               <p>11.5%</p>
             </div>
           </div>

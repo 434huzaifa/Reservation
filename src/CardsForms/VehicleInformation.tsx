@@ -32,7 +32,7 @@ const VehicleInformation = ({
     const t_options: DefaultOptionType[] = [];
     carListQuery?.data?.data.forEach((x) => {
       if (x.type == v) {
-        t_options.push({ value: x.id, label: x.model });
+        t_options.push({ value: x.id, label: `${x.make} ${x.model} ${x.year}` });
       }
     });
     if (t_options.length != 0) {
