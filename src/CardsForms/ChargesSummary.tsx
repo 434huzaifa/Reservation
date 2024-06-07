@@ -8,31 +8,12 @@ const ChargesSummary = ({
   dataSource: Summary[] | undefined;
 }) => {
   console.log(dataSource);
-//   let total = 0;
-//   let Tax = 0;
-//   let Discount = 0;
-//   dataSource?.forEach((x) => {
-//     if (x.Total) {
-//       total = total + x.Total;
-//     }
-//   });
-
-//   percentage?.forEach((x) => {
-//     if (x.Charge == "Discount" && x.Rate) {
-//       Discount = (total * x.Rate) / 100;
-//       dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Discount });
-//     } else if (x.Charge == "Rental Tax" && x.Rate) {
-//       Tax = (total * x.Rate) / 100;
-//       dataSource?.push({ Charge: x.Charge, Rate: x.Rate, Total: Tax });
-//     }
-//   });
-//   dataSource?.push({ Charge: "Total", Total: total + Tax - Discount });
   const columns: ColumnsType = [
     {
       title: "Charge",
       key: "Charge",
       dataIndex: "Charge",
-      render: (value, record, index) => {
+      render: (value, _, index) => {
         if (dataSource && dataSource?.length - 1 == index) {
           return <p className="font-bold">Total</p>;
         } else if (value == "Discount") {
@@ -43,25 +24,25 @@ const ChargesSummary = ({
           return value;
         }
       },
-      //   onCell: (record: Summary, index) => {
-      //     if ((dataSource && index == dataSource?.length - 1) || !record.Unit) {
-      //       return { colSpan: 3 };
-      //     } else {
-      //       return { colSpan: 1 };
-      //     }
-      //   },
+        onCell: (record: Summary) => {
+          if (record.Charge=="Total") {
+            return { colSpan: 3 };
+          } else {
+            return { colSpan: 1 };
+          }
+        },
     },
     {
       title: "Unit",
       key: "Unit",
       dataIndex: "Unit",
-      //   onCell: (record: Summary, index) => {
-      //     if (!record.Unit || (dataSource && index == dataSource?.length - 1)) {
-      //       return { colSpan: 0 };
-      //     } else {
-      //       return { colSpan: 1 };
-      //     }
-      //   },
+        onCell: (record: Summary) => {
+          if (record.Charge=="Total") {
+            return { colSpan: 0 };
+          } else {
+            return { colSpan: 1 };
+          }
+        },
     },
     {
       title: "Rate",
@@ -74,13 +55,13 @@ const ChargesSummary = ({
           return value;
         }
       },
-      //   onCell: (record, index) => {
-      //     if (!record.Rate || (dataSource && index == dataSource?.length - 1)) {
-      //       return { colSpan: 0 };
-      //     } else {
-      //       return { colSpan: 1 };
-      //     }
-      //   },
+        onCell: (record) => {
+            if (record.Charge=="Total") {
+                return { colSpan: 0 };
+              } else {
+                return { colSpan: 1 };
+              }
+        },
     },
     {
       title: "Total",

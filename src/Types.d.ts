@@ -6,9 +6,6 @@ interface Rates {
   weekly: number;
 }
 
-interface Features {
-  [key: string]: string[];
-}
 
 interface Car {
   id: string;
@@ -18,7 +15,7 @@ interface Car {
   type: string;
   seats: number;
   bags: number;
-  features: Features;
+  features: string[];
   rates: Rates;
   imageURL: string;
 }
