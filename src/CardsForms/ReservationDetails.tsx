@@ -44,6 +44,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
               value={pickupDate}
               className="w-full"
               onChange={(v) => pickupOnChange(v)}
+              showTime={{defaultOpenValue:dayjs(),showNow:true,use12Hours:true}}
             ></DatePicker>
           </Form.Item>
           <Form.Item
@@ -58,6 +59,7 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
               status={returnDateStatus}
               className="w-full"
               onChange={(v) => returnOnChange(v)}
+              showTime={{defaultOpenValue:dayjs(),showNow:true,use12Hours:true}}
             ></DatePicker>
             {returnDateStatus == "error" && (
               <p className="text-red-500 text-xs">
@@ -72,7 +74,8 @@ const ReservationDetails = ({ form }: { form: FormInstance }) => {
                 pickupDate
                   ? returnDate
                     ? humanizeDuration(
-                        pickupDate.diff(returnDate, "millisecond")
+                        pickupDate.diff(returnDate, "millisecond"),
+                        {round:true,units:["w","d","h"], delimiter:" "}
                       )
                     : ""
                   : ""

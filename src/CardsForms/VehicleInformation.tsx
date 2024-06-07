@@ -2,6 +2,7 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { Card, Form, FormInstance, Select, Spin } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import { useState } from "react";
+import { ResponseData } from "../Types";
 
 const VehicleInformation = ({
   form,

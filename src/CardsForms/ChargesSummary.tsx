@@ -1,8 +1,9 @@
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { Summary } from "../Types";
 
-const ChargesSummary = () => {
-    
+const ChargesSummary = ({dataSource}:{dataSource:Summary[]|undefined}) => {
+    console.log(dataSource);
     const columns:ColumnsType=[
         {
             title:"Charge",
